@@ -6,41 +6,41 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.databinding.DataBindingUtil;
+
+import com.example.app_ecocity.databinding.ActivityLoginBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    // Declarar las variables para los componentes
-    private EditText etUsuario;
-    private Button btnEntrar;
+    private ActivityLoginBinding binding;
+    private FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // 1. Asociar el XML a esta clase Java
-
-        setContentView(R.layout.activity_login);
-
-        // 2. Encontrar los componentes por su ID
-
-        //etUsuario = findViewById(R.id.etUsuario);
-        //btnEntrar = findViewById(R.id.btnEntrar);
-
-        // 3. Programar la lógica del botón
-
-        btnEntrar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nombre = etUsuario.getText().toString();
-                // Aquí podrías saltar a la pantalla de Incidencias
-                irAIncidencias();
-            }
-        });
+        binding = DataBindingUtil.setContentView(
+                this,
+                R.layout.activity_login
+        );
+        mAuth = FirebaseAuth.getInstance();
     }
 
-    private void irAIncidencias() {
-        Intent intent = new Intent(this, IncidenciasActivity.class);
-        startActivity(intent);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            Intent intent = new Intent(getApplicationContext(), InformacionActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }
