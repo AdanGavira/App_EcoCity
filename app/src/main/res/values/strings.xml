@@ -4,7 +4,7 @@
     <string name="contraseña">Contraseña</string>
     <string name="ingresar">Ingresar</string>
     <string name="olvidaste_la_contrase_a">¿Olvidaste la contraseña?</string>
-    <string name="no_tienes_cuenta_reg_strame">¿No tienes cuenta? Regístrame</string>
+    <string name="no_tienes_cuenta_reg_strame">¿No tienes cuenta? Regístrate</string>
     <string name="iniciar_sesi_n">Iniciar Sesión</string>
     <string name="Registro">Registro</string>
     <string name="email">Email</string>
@@ -21,7 +21,7 @@
     <string name="NuevaIncidencia">Nueva Incidencia\n</string>
     <string name="titulo">Título</string>
     <string name="descripcion">Descripción</string>
-    <string name="NivelUrgencia">Nivel de Urgencia</string>
+    <string name="NivelPrioridad">Nivel de Prioridad</string>
     <string name="foto">Foto</string>
     <string name="ubicacion">Ubicación</string>
     <string name="elegir_ubicacion">Elegir Ubicación</string>
@@ -30,4 +30,6 @@
     <string name="EditarIncidencia">Editar Incidencia</string>
     <string name="borrar_incidencia">Borrar Incidencia</string>
     <string name="Informacion">Información</string>
+    <string name="enviar_correo">Envíar correo</string>
+    <string name="restablecer_contrasena">Restablecer Contraseña</string>
 </resources>
