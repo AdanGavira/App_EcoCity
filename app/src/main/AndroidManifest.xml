@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.App_EcoCity">
         <activity
-            android:name=".InformacionActivity"
+            android:name=".RestablecerContrasenaActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
@@ -23,6 +23,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RegistroActivity"
+            android:exported="true" />
+        <activity
+            android:name=".IncidenciasActivity"
+            android:exported="true" />
+        <activity
+            android:name=".InformacionActivity"
+            android:exported="true" />
+        <activity
+            android:name=".CrearIncidenciasActivity"
+            android:exported="true" />
+        <activity
+            android:name=".EditarIncidenciasActivity"
+            android:exported="true" />
     </application>
 
 </manifest>

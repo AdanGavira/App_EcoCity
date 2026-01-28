@@ -29,13 +29,14 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
+                    android:id="@+id/btnBack"
                     android:src="@drawable/ic_flecha_atras" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/Registro"
+                    android:text="@string/restablecer_contrasena"
                     android:textColor="@color/black"
                     android:textSize="30sp"
                     android:textStyle="bold" />
@@ -53,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="32dp"
-                android:gravity="center">
+                android:gravity="top">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -79,77 +80,12 @@
                         android:layout_marginBottom="16dp"
                         android:inputType="textEmailAddress" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/usuario"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:textColor="@color/black"
-                        android:layout_marginBottom="10dp" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/usuario_hint"
-                        android:id="@+id/usuario"
-                        android:background="#F0EEF3"
-                        android:padding="12dp"
-                        android:layout_marginBottom="16dp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/contrase_a"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:textColor="@color/black"
-                        android:layout_marginBottom="10dp" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/contrase_a_hint"
-                        android:id="@+id/contrasena"
-                        android:background="#F0EEF3"
-                        android:padding="12dp"
-                        android:layout_marginBottom="16dp"
-                        android:inputType="textPassword" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/confirmar_contrase_a"
-                        android:id="@+id/confirmarcontrasenaview"
-                        android:textStyle="bold"
-                        android:textSize="20sp"
-                        android:textColor="@color/black"
-                        android:layout_marginBottom="10dp" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/confirmar_contrase_a_hint"
-                        android:id="@+id/confirmarcontrasena"
-                        android:background="#F0EEF3"
-                        android:padding="12dp"
-                        android:layout_marginBottom="16dp"
-                        android:inputType="textPassword" />
-
-                    <CheckBox
-                        android:id="@+id/terminos"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/acepto_los_t_rminos_y_condiciones"
-                        android:textSize="18sp"
-                        android:layout_marginBottom="24dp" />
-
                     <Button
-                        android:id="@+id/BotonRegistro"
+                        android:id="@+id/BotonEnviarCorreo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="@string/registrarse"
+                        android:text="@string/enviar_correo"
                         android:backgroundTint="@color/azul"
                         android:paddingLeft="40dp"
                         android:paddingRight="40dp"
