@@ -37,6 +37,7 @@ public class CrearIncidenciasActivity extends AppCompatActivity {
 
         binding.etAdjuntarFoto.setOnClickListener(v -> mostrarDialogoImagen());
         binding.layoutVerMapa.setOnClickListener(v -> {
+            Toast.makeText(this, "Abriendo mapa", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, SeleccionarUbicacionActivity.class);
             startActivityForResult(intent, REQUEST_UBICACION);
         });
