@@ -41,7 +41,7 @@ public class InformacionActivity extends AppCompatActivity {
 
         if (!tienePermisoImagenes()) {
             pedirPermisoImagenes();
-            return; // ⛔ NO intentes cargar la imagen aún
+            return; //  Vuelve si no consigue la imagen
         }
 
         if (incidencia != null) {
