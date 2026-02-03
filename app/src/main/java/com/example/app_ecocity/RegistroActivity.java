@@ -82,14 +82,11 @@ public class RegistroActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT
             ).show();
             }
-
-
     }
 
     private boolean isValidPass(String contrasena1, String contrasena2){ //Metodo para validar las contraseñas
         if (contrasena2.equals(contrasena1)){
             return true;
         } else return false;
-
     }
 }

@@ -39,9 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     // Insertar incidencia en la base de datos
-    public void insertarIncidencia(String titulo, String descripcion,
-                                   String prioridad, String fecha,
-                                   String fotoUrl, String ubicacion) {
+    public void insertarIncidencia(String titulo, String descripcion, String prioridad, String fecha, String fotoUrl, String ubicacion) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -89,9 +87,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Incidencia obtenerIncidenciaPorId(int id) {
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT * FROM incidencias WHERE id = ?",
-                new String[]{String.valueOf(id)}
+        Cursor cursor = db.rawQuery("SELECT * FROM incidencias WHERE id = ?", new String[]{String.valueOf(id)}
         );
 
         Incidencia incidencia = null;
@@ -115,9 +111,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //Actualizar los datos de una incidencia
 
-    public void actualizarIncidencia(int id, String titulo, String descripcion,
-                                     String prioridad, String fecha,
-                                     String fotoUrl, String ubicacion) {
+    public void actualizarIncidencia(int id, String titulo, String descripcion, String prioridad, String fecha, String fotoUrl, String ubicacion) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -129,8 +123,7 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put("foto_url", fotoUrl);
         values.put("ubicacion", ubicacion);
 
-        db.update("incidencias", values, "id = ?",
-                new String[]{String.valueOf(id)});
+        db.update("incidencias", values, "id = ?", new String[]{String.valueOf(id)});
         db.close();
     }
 
