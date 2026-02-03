@@ -31,6 +31,7 @@ public class SeleccionarUbicacionActivity extends AppCompatActivity implements O
     private static final int REQUEST_LOCATION_PERMISSION = 200;
     private GoogleMap mMap;
     private LatLng ubicacionSeleccionada = null;
+    private LatLng ubicacionInicial = null;
     private FusedLocationProviderClient fusedLocationClient;
     private ActivitySeleccionarUbicacionBinding binding;
 
@@ -54,6 +55,15 @@ public class SeleccionarUbicacionActivity extends AppCompatActivity implements O
             mapFragment.getMapAsync(this);
         }
 
+        String ubicacionRecibida = getIntent().getStringExtra("UBICACION_ACTUAL");
+        if (ubicacionRecibida != null && !ubicacionRecibida.equals("null")) {
+            String[] partes = ubicacionRecibida.split(",");
+            ubicacionInicial = new LatLng(
+                    Double.parseDouble(partes[0]),
+                    Double.parseDouble(partes[1])
+            );
+        }
+
         binding.btnConfirmarUbicacion.setOnClickListener(v -> {
             if (ubicacionSeleccionada != null) {
                 devolverUbicacion();
@@ -74,6 +84,14 @@ public class SeleccionarUbicacionActivity extends AppCompatActivity implements O
             activarUbicacionUsuario();
         } else {
             pedirPermisoUbicacion();
+        }
+
+        if (ubicacionInicial != null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionInicial, 15f));
+            mMap.addMarker(new MarkerOptions().position(ubicacionInicial));
+            ubicacionSeleccionada = ubicacionInicial;
+        } else {
+            activarUbicacionUsuario(); // Ubicación actual
         }
 
         // Permitir seleccionar ubicación manualmente
@@ -152,6 +170,8 @@ public class SeleccionarUbicacionActivity extends AppCompatActivity implements O
                                 location.getLongitude()
                         );
 
+                        ubicacionSeleccionada = userLatLng;
+
                         mMap.moveCamera(
                                 CameraUpdateFactory.newLatLngZoom(userLatLng, 15f)
                         );
@@ -164,5 +184,4 @@ public class SeleccionarUbicacionActivity extends AppCompatActivity implements O
                     }
                 });
     }
-
 }

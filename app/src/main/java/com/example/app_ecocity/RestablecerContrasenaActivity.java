@@ -36,6 +36,9 @@ public class RestablecerContrasenaActivity extends AppCompatActivity {
         });
 
         binding.BotonEnviarCorreo.setOnClickListener(v -> enviarCorreo());
+        binding.btnBack.setOnClickListener(
+                v -> finish()
+        );
     }
 
     private void enviarCorreo() {
