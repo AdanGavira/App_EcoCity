@@ -9,7 +9,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -17,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.app_ecocity.databinding.ActivityEditarIncidenciasBinding;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.time.LocalDate;
 
@@ -31,6 +34,8 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
     private Uri imageUri;
     private static final int REQUEST_GALERIA = 1;
     private static final int REQUEST_CAMARA = 2;
+    private static final int REQUEST_UBICACION = 3;
+    private String ubicacionSeleccionada = "null";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +48,6 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
 
-        if (!tienePermisoImagenes()) {
-            pedirPermisoImagenes();
-            return; // ⛔ NO intentes cargar la imagen aún
-        }
-
         incidenciaId = getIntent().getIntExtra("INCIDENCIA_ID", -1); //Recogemos el id de la incidencia que queremos editar
 
         if (incidenciaId != -1) {
@@ -55,6 +55,15 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
         }
 
         binding.etAdjuntarFoto.setOnClickListener(v -> mostrarDialogoImagen());
+
+        binding.layoutVerMapa.setOnClickListener(v -> {
+            Toast.makeText(this, "Abriendo mapa", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, SeleccionarUbicacionActivity.class);
+            if (ubicacion != null && !ubicacion.equals("null")) {
+                intent.putExtra("UBICACION_ACTUAL", ubicacion);
+            }
+            startActivityForResult(intent, REQUEST_UBICACION);
+        });
 
         binding.btnGuardar.setOnClickListener(v -> {
             guardarCambios();
@@ -67,6 +76,31 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
                 v -> finish()
         );
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && data != null) {
+
+            if (requestCode == REQUEST_UBICACION) {
+                ubicacionSeleccionada = data.getStringExtra("UBICACION");
+
+                if (ubicacionSeleccionada != null) {
+                    ubicacion = ubicacionSeleccionada;
+                    binding.ubicacion.setText(ubicacionSeleccionada);
+                }
+            }
+
+            if (requestCode == REQUEST_GALERIA) {
+                imageUri = data.getData();
+                fotoUrl = imageUri.toString();
+                binding.ivPreviewFoto.setImageURI(imageUri);
+                binding.ivPreviewFoto.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
 
     private void cargarIncidencia() { //Cargamos desde la base de datos la informacion de la incidencia
 
@@ -90,13 +124,15 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
                 break;
         }
 
-        if (i.getFotoUrl() != null) { //En el Hito1 la foto será la default
+        if (i.getFotoUrl() != null) {
             fotoUrl = i.getFotoUrl();
             binding.ivPreviewFoto.setImageURI(Uri.parse(fotoUrl));
             binding.ivPreviewFoto.setVisibility(View.VISIBLE);
         }
 
-        ubicacion = i.getUbicacion(); //En el Hito1 no hay ubicacion
+        if (i.getUbicacion() != null && !i.getUbicacion().equals("null")) {
+            binding.ubicacion.setText(i.getUbicacion());
+        }
     }
 
     private void guardarCambios() {
@@ -176,36 +212,4 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
                 .setNegativeButton("No", null)
                 .show();
     }
-
-    private void pedirPermisoImagenes() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.READ_MEDIA_IMAGES},
-                    REQUEST_PERMISO_IMAGEN
-            );
-        } else {
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_PERMISO_IMAGEN
-            );
-        }
-    }
-
-    private boolean tienePermisoImagenes() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            return ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_MEDIA_IMAGES
-            ) == PackageManager.PERMISSION_GRANTED;
-        } else {
-            return ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED;
-        }
-    }
-
-
 }

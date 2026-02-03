@@ -55,7 +55,11 @@ public class CrearIncidenciasActivity extends AppCompatActivity {
 
             db.insertarIncidencia(titulo, descripcion, prioridad, fecha, fotoUrl, ubicacion);
 
-            finish(); //Cuando crear una nueva incidencia vuelve a la Activity de incidencias
+            finish(); //Cuando crea una nueva incidencia vuelve a la Activity de incidencias
+        });
+
+        binding.btnBack.setOnClickListener(v -> {
+            finish();
         });
     }
 
@@ -73,10 +77,10 @@ public class CrearIncidenciasActivity extends AppCompatActivity {
                 ubicacionSeleccionada = data.getStringExtra("UBICACION");
                 binding.ubicacion.setText(ubicacionSeleccionada);
             }
-
-            binding.ivPreviewFoto.setImageURI(imageUri);
-            binding.ivPreviewFoto.setVisibility(View.VISIBLE);
-
+            if (imageUri != null) {
+                binding.ivPreviewFoto.setImageURI(imageUri);
+                binding.ivPreviewFoto.setVisibility(View.VISIBLE);
+            }
         }
     }
 

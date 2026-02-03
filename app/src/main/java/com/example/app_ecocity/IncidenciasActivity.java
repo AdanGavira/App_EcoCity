@@ -1,10 +1,16 @@
 package com.example.app_ecocity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -16,6 +22,7 @@ import java.util.List;
 
 public class IncidenciasActivity extends AppCompatActivity {
 
+    private static final int REQUEST_PERMISO_IMAGEN = 100;
     private ActivityIncidenciasBinding binding;
     FirebaseAuth mAuth;
     private DBHelper dbHelper;
@@ -44,6 +51,10 @@ public class IncidenciasActivity extends AppCompatActivity {
         binding.rvIncidencias.setLayoutManager(new LinearLayoutManager(this));
         binding.rvIncidencias.setAdapter(adapter);
 
+        if (!tienePermisoImagenes()) { //Se asegura de que la app tiene permisos con las imagenes del dispositivo
+            pedirPermisoImagenes();
+        }
+
 
         binding.anadirIncidencia.setOnClickListener(v ->
                 startActivity(new Intent(this, CrearIncidenciasActivity.class))
@@ -51,17 +62,60 @@ public class IncidenciasActivity extends AppCompatActivity {
 
 
         binding.btnBack.setOnClickListener(v -> {
-            startActivity(new Intent(this, LoginActivity.class));
+            finish();
             mAuth.signOut();
             Toast.makeText(this, "Sesión cerrada", Toast.LENGTH_SHORT).show();
         });
     }
-        @Override
-        protected void onResume() { //Asegurarse de que la información se muestra aunque salgamos del Activity
-            super.onResume();
-            lista.clear();
-            lista.addAll(dbHelper.obtenerIncidencias());
-            adapter.notifyDataSetChanged();
-        }
 
+    @Override
+    protected void onResume() { //Asegurarse de que la información se muestra aunque salgamos del Activity
+        super.onResume();
+        lista.clear();
+        lista.addAll(dbHelper.obtenerIncidencias());
+        adapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == REQUEST_PERMISO_IMAGEN) {
+            if (grantResults.length > 0 &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Ya tiene permiso y refresca la interfaz si es necesario
+                onResume();
+            }
+        }
+    }
+
+    private void pedirPermisoImagenes() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.READ_MEDIA_IMAGES},
+                    REQUEST_PERMISO_IMAGEN
+            );
+        } else {
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    REQUEST_PERMISO_IMAGEN
+            );
+        }
+    }
+
+    private boolean tienePermisoImagenes() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            return ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_MEDIA_IMAGES
+            ) == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+}

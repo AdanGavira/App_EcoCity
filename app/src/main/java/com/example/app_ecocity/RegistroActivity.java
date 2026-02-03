@@ -34,6 +34,10 @@ public class RegistroActivity extends AppCompatActivity {
         binding.BotonRegistro.setOnClickListener(v -> {
             registrarUsuario();
         });
+
+        binding.btnBack.setOnClickListener(
+                v -> finish()
+        );
     }
 
 

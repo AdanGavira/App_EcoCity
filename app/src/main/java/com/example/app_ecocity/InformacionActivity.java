@@ -23,8 +23,6 @@ import com.example.app_ecocity.databinding.ActivityInformacionBinding;
 public class InformacionActivity extends AppCompatActivity {
 
     ActivityInformacionBinding binding;
-    private static final int REQUEST_PERMISO_IMAGEN = 100;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +37,7 @@ public class InformacionActivity extends AppCompatActivity {
         DBHelper dbHelper = new DBHelper(this);
         Incidencia incidencia = dbHelper.obtenerIncidenciaPorId(incidenciaId);
 
-        if (!tienePermisoImagenes()) {
-            pedirPermisoImagenes();
-            return; //  Vuelve si no consigue la imagen
-        }
+
 
         if (incidencia != null) {
             binding.titulo.setText(incidencia.getTitulo());
@@ -54,8 +49,7 @@ public class InformacionActivity extends AppCompatActivity {
             } else {
                 binding.ivInfoFoto.setVisibility(View.GONE);
             }
-
-            // Añadir foto e ubicación
+            binding.tvInfoUbicacion.setText(incidencia.getUbicacion());
         }
 
         binding.btnBack.setOnClickListener(v -> {
@@ -63,33 +57,5 @@ public class InformacionActivity extends AppCompatActivity {
         });
     }
 
-    private void pedirPermisoImagenes() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.READ_MEDIA_IMAGES},
-                    REQUEST_PERMISO_IMAGEN
-            );
-        } else {
-            ActivityCompat.requestPermissions(
-                    this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_PERMISO_IMAGEN
-            );
-        }
-    }
 
-    private boolean tienePermisoImagenes() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            return ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_MEDIA_IMAGES
-            ) == PackageManager.PERMISSION_GRANTED;
-        } else {
-            return ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_GRANTED;
-        }
-    }
 }
