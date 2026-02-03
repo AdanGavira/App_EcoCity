@@ -39,7 +39,7 @@ public class InformacionActivity extends AppCompatActivity {
 
 
 
-        if (incidencia != null) {
+        if (incidencia != null) { //Muestra los datos de la incidencia
             binding.titulo.setText(incidencia.getTitulo());
             binding.descripcion.setText(incidencia.getDescripcion());
             binding.prioridad.setText(incidencia.getPrioridad());

@@ -54,9 +54,9 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
             cargarIncidencia();
         }
 
-        binding.etAdjuntarFoto.setOnClickListener(v -> mostrarDialogoImagen());
+        binding.etAdjuntarFoto.setOnClickListener(v -> mostrarDialogoImagen()); //Abre el dialógo para adjuntar una imagen
 
-        binding.layoutVerMapa.setOnClickListener(v -> {
+        binding.layoutVerMapa.setOnClickListener(v -> { //Abre la activity con Google Maps
             Toast.makeText(this, "Abriendo mapa", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, SeleccionarUbicacionActivity.class);
             if (ubicacion != null && !ubicacion.equals("null")) {
@@ -83,16 +83,16 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK && data != null) {
 
-            if (requestCode == REQUEST_UBICACION) {
+            if (requestCode == REQUEST_UBICACION) { //Comprueba si existe una ubicación guardada
                 ubicacionSeleccionada = data.getStringExtra("UBICACION");
 
-                if (ubicacionSeleccionada != null) {
+                if (ubicacionSeleccionada != null) { //Muestra la ubicacion si existe
                     ubicacion = ubicacionSeleccionada;
                     binding.ubicacion.setText(ubicacionSeleccionada);
                 }
             }
 
-            if (requestCode == REQUEST_GALERIA) {
+            if (requestCode == REQUEST_GALERIA) { //Comprueba si existe una imagen guardada y la muestra si existe
                 imageUri = data.getData();
                 fotoUrl = imageUri.toString();
                 binding.ivPreviewFoto.setImageURI(imageUri);
@@ -124,13 +124,13 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
                 break;
         }
 
-        if (i.getFotoUrl() != null) {
+        if (i.getFotoUrl() != null) { //Carga la foto guardada si existe
             fotoUrl = i.getFotoUrl();
             binding.ivPreviewFoto.setImageURI(Uri.parse(fotoUrl));
             binding.ivPreviewFoto.setVisibility(View.VISIBLE);
         }
 
-        if (i.getUbicacion() != null && !i.getUbicacion().equals("null")) {
+        if (i.getUbicacion() != null && !i.getUbicacion().equals("null")) { //Carga la ubicación guardada si existe
             binding.ubicacion.setText(i.getUbicacion());
         }
     }
@@ -155,7 +155,7 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
         finish();
     }
 
-    private void mostrarDialogoImagen() {
+    private void mostrarDialogoImagen() { //Muestra el dialogo para adjuntar una imagen
         String[] opciones = {"Hacer una foto", "Elegir una foto de la galería"};
 
         new AlertDialog.Builder(this)
@@ -170,19 +170,18 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void abrirCamara() {
+    private void abrirCamara() { //Abre la camara
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "Foto_Incidencia");
 
-        imageUri = getContentResolver()
-                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(intent, REQUEST_CAMARA);
     }
 
-    private void abrirGaleria() {
+    private void abrirGaleria() { //Abre la galeria
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, REQUEST_GALERIA);
@@ -208,8 +207,6 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
                 .setPositiveButton("Sí", (d, w) -> {
                     dbHelper.borrarIncidencia(incidenciaId);
                     finish();
-                })
-                .setNegativeButton("No", null)
-                .show();
+                }).setNegativeButton("No", null).show();
     }
 }

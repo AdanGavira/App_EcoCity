@@ -35,8 +35,9 @@ public class CrearIncidenciasActivity extends AppCompatActivity {
                 R.layout.activity_crear_incidencias
         );
 
-        binding.etAdjuntarFoto.setOnClickListener(v -> mostrarDialogoImagen());
-        binding.layoutVerMapa.setOnClickListener(v -> {
+        binding.etAdjuntarFoto.setOnClickListener(v -> mostrarDialogoImagen()); //Abre el dialógo para adjuntar una imagen
+
+        binding.layoutVerMapa.setOnClickListener(v -> { //Abre la activity con Google Maps
             Toast.makeText(this, "Abriendo mapa", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, SeleccionarUbicacionActivity.class);
             startActivityForResult(intent, REQUEST_UBICACION);
@@ -69,49 +70,45 @@ public class CrearIncidenciasActivity extends AppCompatActivity {
 
         if (resultCode == RESULT_OK) {
 
-            if (requestCode == REQUEST_GALERIA && data != null) {
+            if (requestCode == REQUEST_GALERIA && data != null) { //Comprueba si existe una imagen guardada y la recoge
                 imageUri = data.getData();
             }
 
-            if (requestCode == REQUEST_UBICACION && data != null) {
+            if (requestCode == REQUEST_UBICACION && data != null) { //Comprueba si existe una ubicación guardada y la muestra
                 ubicacionSeleccionada = data.getStringExtra("UBICACION");
                 binding.ubicacion.setText(ubicacionSeleccionada);
             }
-            if (imageUri != null) {
+            if (imageUri != null) { //Si hay una imagen la muestra
                 binding.ivPreviewFoto.setImageURI(imageUri);
                 binding.ivPreviewFoto.setVisibility(View.VISIBLE);
             }
         }
     }
 
-    private void mostrarDialogoImagen() {
+    private void mostrarDialogoImagen() { //Muestra el dialogo para adjuntar una imagen
         String[] opciones = {"Hacer una foto", "Elegir una foto de la galería"};
 
-        new AlertDialog.Builder(this)
-                .setTitle("Adjuntar imagen")
-                .setItems(opciones, (dialog, which) -> {
+        new AlertDialog.Builder(this).setTitle("Adjuntar imagen").setItems(opciones, (dialog, which) -> {
                     if (which == 0) {
                         abrirCamara();
                     } else {
                         abrirGaleria();
                     }
-                })
-                .show();
+        }).show();
     }
 
-    private void abrirCamara() {
+    private void abrirCamara() { //Abre la camara
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "Foto_Incidencia");
 
-        imageUri = getContentResolver()
-                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(intent, REQUEST_CAMARA);
     }
 
-    private void abrirGaleria() {
+    private void abrirGaleria() { //Abre la galeria
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, REQUEST_GALERIA);

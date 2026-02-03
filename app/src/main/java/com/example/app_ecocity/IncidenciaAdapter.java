@@ -47,7 +47,6 @@ public class IncidenciaAdapter extends RecyclerView.Adapter<IncidenciaAdapter.Vi
     public IncidenciaAdapter.ViewHolder onCreateViewHolder( //Aquí dentro llamaremos a carta_incidencia.xml para pasarle el inflater
     @NonNull
     ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.carta_incidencia, parent, false);
 
         return new ViewHolder(view);
@@ -63,7 +62,9 @@ public class IncidenciaAdapter extends RecyclerView.Adapter<IncidenciaAdapter.Vi
         holder.tvTitulo.setText(incidencia.getTitulo());
 
         String desc = incidencia.getDescripcion();
-        if (desc.length() > 30) desc = desc.substring(0, 30) + "...";
+        if (desc.length() > 30) {
+            desc = desc.substring(0, 30) + "...";
+        }
         holder.tvSubtitulo.setText(desc);
 
         //Establecer color de prioridad de la carta

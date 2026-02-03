@@ -47,16 +47,15 @@ public class SeleccionarUbicacionActivity extends AppCompatActivity implements O
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.mapa);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapa); //Recoge el mapa
 
         if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
+            mapFragment.getMapAsync(this); //Crea el mapa
         }
 
-        String ubicacionRecibida = getIntent().getStringExtra("UBICACION_ACTUAL");
-        if (ubicacionRecibida != null && !ubicacionRecibida.equals("null")) {
+        String ubicacionRecibida = getIntent().getStringExtra("UBICACION_ACTUAL"); //Recoge la ubicación actual que recibe de la base de datos
+
+        if (ubicacionRecibida != null && !ubicacionRecibida.equals("null")) { //Si existe una ubicación el mapa se posará en esta
             String[] partes = ubicacionRecibida.split(",");
             ubicacionInicial = new LatLng(
                     Double.parseDouble(partes[0]),
@@ -77,21 +76,21 @@ public class SeleccionarUbicacionActivity extends AppCompatActivity implements O
 
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(GoogleMap googleMap) { //Crea el mapa
         mMap = googleMap;
 
-        if (tienePermisoUbicacion()) {
+        if (tienePermisoUbicacion()) { //Si tiene permiso activa la ubicación actual
             activarUbicacionUsuario();
         } else {
-            pedirPermisoUbicacion();
+            pedirPermisoUbicacion(); //Pide permiso de ubicación al usuario
         }
 
-        if (ubicacionInicial != null) {
+        if (ubicacionInicial != null) { //Si existe una ubicación inicial el marcador se mueve a esta
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionInicial, 15f));
             mMap.addMarker(new MarkerOptions().position(ubicacionInicial));
             ubicacionSeleccionada = ubicacionInicial;
         } else {
-            activarUbicacionUsuario(); // Ubicación actual
+            activarUbicacionUsuario(); // Ubicación actual del usuario
         }
 
         // Permitir seleccionar ubicación manualmente
@@ -103,15 +102,11 @@ public class SeleccionarUbicacionActivity extends AppCompatActivity implements O
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) { //Se realiza al determinar los permisos que a elegido el usuario
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 activarUbicacionUsuario();
             } else {
                 Toast.makeText(
@@ -123,40 +118,25 @@ public class SeleccionarUbicacionActivity extends AppCompatActivity implements O
         }
     }
 
-
     private void devolverUbicacion() {
         if (ubicacionSeleccionada != null) {
             Intent result = new Intent();
-            result.putExtra(
-                    "UBICACION",
-                    ubicacionSeleccionada.latitude + "," +
-                            ubicacionSeleccionada.longitude
-            );
+            result.putExtra("UBICACION", ubicacionSeleccionada.latitude + "," + ubicacionSeleccionada.longitude);
             setResult(RESULT_OK, result);
             finish();
         }
     }
 
     private boolean tienePermisoUbicacion() {
-        return ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED;
+        return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
     private void pedirPermisoUbicacion() {
-        ActivityCompat.requestPermissions(
-                this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_LOCATION_PERMISSION
-        );
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION_PERMISSION);
     }
 
     private void activarUbicacionUsuario() {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-        ) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
@@ -172,15 +152,10 @@ public class SeleccionarUbicacionActivity extends AppCompatActivity implements O
 
                         ubicacionSeleccionada = userLatLng;
 
-                        mMap.moveCamera(
-                                CameraUpdateFactory.newLatLngZoom(userLatLng, 15f)
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLatLng, 15f)
                         );
 
-                        mMap.addMarker(
-                                new MarkerOptions()
-                                        .position(userLatLng)
-                                        .title("Tu ubicación")
-                        );
+                        mMap.addMarker(new MarkerOptions().position(userLatLng).title("Tu ubicación"));
                     }
                 });
     }
