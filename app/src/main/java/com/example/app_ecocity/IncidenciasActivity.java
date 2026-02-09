@@ -37,7 +37,9 @@ public class IncidenciasActivity extends AppCompatActivity {
                 this,
                 R.layout.activity_incidencias
         );
+        UiUtils.aplicarInsets(binding.getRoot());
 
+        // Firebase
         mAuth = FirebaseAuth.getInstance();
 
         firestoreHelper = new FirestoreHelper();
@@ -62,6 +64,10 @@ public class IncidenciasActivity extends AppCompatActivity {
         binding.anadirIncidencia.setOnClickListener(v ->
                 startActivity(new Intent(this, CrearIncidenciasActivity.class))
         );
+
+        binding.ventanaChat.setOnClickListener(v -> {
+                startActivity(new Intent(this, ChatActivity.class));
+        });
 
 
         binding.btnBack.setOnClickListener(v -> {

@@ -44,6 +44,7 @@ public class SeleccionarUbicacionActivity extends AppCompatActivity implements O
                 this,
                 R.layout.activity_seleccionar_ubicacion
         );
+        UiUtils.aplicarInsets(binding.getRoot());
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 

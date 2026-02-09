@@ -4,6 +4,35 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
+    <style name="Theme.AppEcoCity.NoEdgeToEdge" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-    <style name="Theme.App_EcoCity" parent="Base.Theme.App_EcoCity" />
+        <!-- Colores fijos -->
+        <item name="colorPrimary">@color/celeste</item>
+        <item name="colorPrimaryVariant">@color/celeste</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSecondary">@color/azul</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="android:statusBarColor">@color/celeste</item>
+        <item name="android:navigationBarColor">@color/white</item>
+
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+    </style>
+
+    <style name="Theme.AppEcoCity" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <!-- Colores fijos -->
+        <item name="colorPrimary">@color/celeste</item>
+        <item name="colorPrimaryVariant">@color/celeste</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <item name="colorSecondary">@color/azul</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="android:statusBarColor">@color/celeste</item>
+        <item name="android:navigationBarColor">@color/white</item>
+
+    </style>
 </resources>

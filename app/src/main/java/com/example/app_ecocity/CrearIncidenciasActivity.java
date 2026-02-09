@@ -36,6 +36,7 @@ public class CrearIncidenciasActivity extends AppCompatActivity {
                 this,
                 R.layout.activity_crear_incidencias
         );
+        UiUtils.aplicarInsets(binding.getRoot());
 
         binding.etAdjuntarFoto.setOnClickListener(v -> mostrarDialogoImagen()); //Abre el dialógo para adjuntar una imagen
 
@@ -45,7 +46,7 @@ public class CrearIncidenciasActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_UBICACION);
         });
 
-        binding.btnGuardarIncidencia.setOnClickListener(v -> {
+        binding.btnGuardarIncidencia.setOnClickListener(v -> { //Guarda la incidencia en FireStore
 
             FirestoreHelper firestore = new FirestoreHelper();
 
@@ -58,10 +59,8 @@ public class CrearIncidenciasActivity extends AppCompatActivity {
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
             Incidencia incidencia = new Incidencia(userId, titulo, descripcion, prioridad, fecha, fotoUrl, ubicacion);
-            Log.d("FIRESTORE_TEST", "Voy a guardar incidencia");
+
             firestore.insertarIncidencia(incidencia);
-            Log.d("FIRESTORE_TEST", "Insertar llamado");
-            finish();
 
             finish(); //Cuando crea una nueva incidencia vuelve a la Activity de incidencias
         });

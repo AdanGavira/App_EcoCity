@@ -35,4 +35,7 @@
     <string name="google_maps_key">AIzaSyBFp9cnI6ZaFOMZdmnZTj5PHw2-EJBeL78</string>
     <string name="confirmar_ubicacion">Confirmar ubicación</string>
     <string name="usar_mi_ubicacion">Usar mi ubicación</string>
+    <string name="escribe_tu_mensaje">Escribe tu mensaje</string>
+    <string name="enviar">Enviar</string>
+    <string name="chat">Chat</string>
 </resources>

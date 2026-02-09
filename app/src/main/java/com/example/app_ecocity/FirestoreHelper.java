@@ -20,17 +20,10 @@ public class FirestoreHelper {
     }
 
     public void insertarIncidencia(Incidencia incidencia) {
-        Log.d("FIRESTORE_TEST", "Dentro de insertarIncidencia");
-        incidenciasRef.add(incidencia).addOnSuccessListener(doc ->
-                        Log.d("FIRESTORE_TEST", "Guardado OK: " + doc.getId())
-                )
-                .addOnFailureListener(e ->
-                        Log.e("FIRESTORE_TEST", "Error guardando", e)
-                );
+        incidenciasRef.add(incidencia);
     }
 
-    public void obtenerIncidenciasUsuario(String userId,
-                                          OnSuccessListener<List<Incidencia>> listener) {
+    public void obtenerIncidenciasUsuario(String userId, OnSuccessListener<List<Incidencia>> listener) {
 
         incidenciasRef
                 .whereEqualTo("userId", userId)

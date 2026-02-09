@@ -46,7 +46,9 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
                 this,
                 R.layout.activity_editar_incidencias
         );
+        UiUtils.aplicarInsets(binding.getRoot());
 
+        // Firebase
         firestoreHelper = new FirestoreHelper();
         incidenciaId = getIntent().getStringExtra("INCIDENCIA_ID");
 

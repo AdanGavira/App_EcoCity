@@ -34,6 +34,8 @@ public class LoginActivity extends AppCompatActivity {
                 this,
                 R.layout.activity_login
         );
+
+        // Firebase
         mAuth = FirebaseAuth.getInstance();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 

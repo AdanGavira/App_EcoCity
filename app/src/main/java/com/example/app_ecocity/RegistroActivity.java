@@ -29,6 +29,9 @@ public class RegistroActivity extends AppCompatActivity {
                 this,
                 R.layout.activity_registro
         );
+        UiUtils.aplicarInsets(binding.getRoot());
+
+        // Firebase
         mAuth = FirebaseAuth.getInstance();
 
         binding.BotonRegistro.setOnClickListener(v -> {
