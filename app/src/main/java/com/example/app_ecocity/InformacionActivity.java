@@ -34,6 +34,7 @@ public class InformacionActivity extends AppCompatActivity {
                 this,
                 R.layout.activity_informacion
         );
+        UiUtils.aplicarInsets(binding.getRoot());
 
         firestoreHelper = new FirestoreHelper();
         incidenciaId = getIntent().getStringExtra("INCIDENCIA_ID");

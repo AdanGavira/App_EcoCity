@@ -28,7 +28,9 @@ public class RestablecerContrasenaActivity extends AppCompatActivity {
                 this,
                 R.layout.activity_restablecer_contrasena
         );
+        UiUtils.aplicarInsets(binding.getRoot());
 
+        // Firebase
         mAuth = FirebaseAuth.getInstance();
 
         binding.btnBack.setOnClickListener(v -> {
