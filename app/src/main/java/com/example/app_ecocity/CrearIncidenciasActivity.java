@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 
 import com.example.app_ecocity.databinding.ActivityCrearIncidenciasBinding;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.InputStream;
 import java.time.LocalDate;
@@ -45,7 +47,7 @@ public class CrearIncidenciasActivity extends AppCompatActivity {
 
         binding.btnGuardarIncidencia.setOnClickListener(v -> {
 
-            DBHelper db = new DBHelper(this);
+            FirestoreHelper firestore = new FirestoreHelper();
 
             String titulo = binding.etTituloIncidencia.getText().toString();
             String descripcion = binding.etDescripcionIncidencia.getText().toString();
@@ -53,8 +55,13 @@ public class CrearIncidenciasActivity extends AppCompatActivity {
             String fecha = LocalDate.now().toString();
             String fotoUrl = (imageUri != null) ? imageUri.toString() : "null"; //Si no hay foto no la guarda
             String ubicacion = ubicacionSeleccionada;
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-            db.insertarIncidencia(titulo, descripcion, prioridad, fecha, fotoUrl, ubicacion);
+            Incidencia incidencia = new Incidencia(userId, titulo, descripcion, prioridad, fecha, fotoUrl, ubicacion);
+            Log.d("FIRESTORE_TEST", "Voy a guardar incidencia");
+            firestore.insertarIncidencia(incidencia);
+            Log.d("FIRESTORE_TEST", "Insertar llamado");
+            finish();
 
             finish(); //Cuando crea una nueva incidencia vuelve a la Activity de incidencias
         });

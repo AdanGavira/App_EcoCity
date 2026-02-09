@@ -27,8 +27,9 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
 
     private ActivityEditarIncidenciasBinding binding;
     private static final int REQUEST_PERMISO_IMAGEN = 100;
-    private DBHelper dbHelper;
-    private int incidenciaId = -1;
+    private FirestoreHelper firestoreHelper;
+    private String incidenciaId;
+    private Incidencia incidencia;
     private String fotoUrl;
     private String ubicacion;
     private Uri imageUri;
@@ -46,11 +47,10 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
                 R.layout.activity_editar_incidencias
         );
 
-        dbHelper = new DBHelper(this);
+        firestoreHelper = new FirestoreHelper();
+        incidenciaId = getIntent().getStringExtra("INCIDENCIA_ID");
 
-        incidenciaId = getIntent().getIntExtra("INCIDENCIA_ID", -1); //Recogemos el id de la incidencia que queremos editar
-
-        if (incidenciaId != -1) {
+        if (incidenciaId != null) {
             cargarIncidencia();
         }
 
@@ -104,53 +104,49 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
 
     private void cargarIncidencia() { //Cargamos desde la base de datos la informacion de la incidencia
 
-        Incidencia i = dbHelper.obtenerIncidenciaPorId(incidenciaId);
-        if (i == null) {
-            return; //Si el id es nulo sale del metodo
-        }
+        firestoreHelper.obtenerIncidenciaPorId(incidenciaId, i -> {
 
-        binding.etTituloIncidencia.setText(i.getTitulo());
-        binding.etDescripcionIncidencia.setText(i.getDescripcion());
+            if (i == null) {
+                return; //Si el id es nulo sale del metodo
+            }
+            incidencia = i;
 
-        switch (i.getPrioridad()) {
-            case "Alta":
-                binding.rbAlta.setChecked(true);
-                break;
-            case "Media":
-                binding.rbMedia.setChecked(true);
-                break;
-            case "Baja":
-                binding.rbBaja.setChecked(true);
-                break;
-        }
+            binding.etTituloIncidencia.setText(i.getTitulo());
+            binding.etDescripcionIncidencia.setText(i.getDescripcion());
 
-        if (i.getFotoUrl() != null) { //Carga la foto guardada si existe
-            fotoUrl = i.getFotoUrl();
-            binding.ivPreviewFoto.setImageURI(Uri.parse(fotoUrl));
-            binding.ivPreviewFoto.setVisibility(View.VISIBLE);
-        }
+            switch (i.getPrioridad()) {
+                case "Alta":
+                    binding.rbAlta.setChecked(true);
+                    break;
+                case "Media":
+                    binding.rbMedia.setChecked(true);
+                    break;
+                case "Baja":
+                    binding.rbBaja.setChecked(true);
+                    break;
+            }
 
-        if (i.getUbicacion() != null && !i.getUbicacion().equals("null")) { //Carga la ubicación guardada si existe
-            binding.ubicacion.setText(i.getUbicacion());
-        }
+            if (i.getFotoUrl() != null) { //Carga la foto guardada si existe
+                fotoUrl = i.getFotoUrl();
+                binding.ivPreviewFoto.setImageURI(Uri.parse(fotoUrl));
+                binding.ivPreviewFoto.setVisibility(View.VISIBLE);
+            }
+
+            if (i.getUbicacion() != null && !i.getUbicacion().equals("null")) { //Carga la ubicación guardada si existe
+                binding.ubicacion.setText(i.getUbicacion());
+            }
+        });
     }
 
     private void guardarCambios() {
+        incidencia.setTitulo(binding.etTituloIncidencia.getText().toString());
+        incidencia.setDescripcion(binding.etDescripcionIncidencia.getText().toString());
+        incidencia.setPrioridad(obtenerPrioridad());
+        incidencia.setFecha(LocalDate.now().toString());
+        incidencia.setFotoUrl(fotoUrl);
+        incidencia.setUbicacion(ubicacion);
 
-        String titulo = binding.etTituloIncidencia.getText().toString();
-        String descripcion = binding.etDescripcionIncidencia.getText().toString();
-        String urgencia = obtenerPrioridad();
-        String fecha = LocalDate.now().toString();
-
-        dbHelper.actualizarIncidencia(
-                incidenciaId,
-                titulo,
-                descripcion,
-                urgencia,
-                fecha,
-                fotoUrl,
-                ubicacion
-        );
+        firestoreHelper.actualizarIncidencia(incidencia);
 
         finish();
     }
@@ -205,8 +201,10 @@ public class EditarIncidenciasActivity extends AppCompatActivity {
                 .setTitle("Eliminar incidencia")
                 .setMessage("¿Seguro que quieres borrar esta incidencia?")
                 .setPositiveButton("Sí", (d, w) -> {
-                    dbHelper.borrarIncidencia(incidenciaId);
+                    firestoreHelper.borrarIncidencia(incidenciaId);
                     finish();
-                }).setNegativeButton("No", null).show();
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }
