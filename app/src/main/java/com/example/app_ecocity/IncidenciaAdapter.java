@@ -28,7 +28,7 @@ public class IncidenciaAdapter extends RecyclerView.Adapter<IncidenciaAdapter.Vi
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvTitulo, tvSubtitulo;
+        TextView tvTitulo, tvSubtitulo, fecha;
         View viewCircle;
         Button btnEditar;
 
@@ -39,6 +39,7 @@ public class IncidenciaAdapter extends RecyclerView.Adapter<IncidenciaAdapter.Vi
             tvSubtitulo = itemView.findViewById(R.id.tvSubtitulo);
             viewCircle = itemView.findViewById(R.id.viewCircle);
             btnEditar = itemView.findViewById(R.id.btnEditar);
+            fecha = itemView.findViewById(R.id.fecha);
         }
     }
 
@@ -65,7 +66,10 @@ public class IncidenciaAdapter extends RecyclerView.Adapter<IncidenciaAdapter.Vi
         if (desc.length() > 30) {
             desc = desc.substring(0, 30) + "...";
         }
+        String fecha = incidencia.getFecha();
+
         holder.tvSubtitulo.setText(desc);
+        holder.fecha.setText(fecha);
 
         //Establecer color de prioridad de la carta
 

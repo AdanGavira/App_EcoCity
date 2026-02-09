@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "886987050198",
-    "project_id": "appecocity-1693f",
-    "storage_bucket": "appecocity-1693f.firebasestorage.app"
+    "project_number": "326538646952",
+    "project_id": "aplicacionecocity",
+    "storage_bucket": "aplicacionecocity.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:886987050198:android:d9fc07907d49e882f70d77",
+        "mobilesdk_app_id": "1:326538646952:android:fa480880ece55c08d4f99d",
         "android_client_info": {
           "package_name": "com.example.app_ecocity"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAPjF2NpZqoGhp1qGjFHgRvZc6-73Xd3V4"
+          "current_key": "AIzaSyCKbGRWDFW4vLaMaDrTOn2FoddTQG-WSTk"
         }
       ],
       "services": {

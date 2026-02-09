@@ -23,6 +23,9 @@ import com.example.app_ecocity.databinding.ActivityInformacionBinding;
 public class InformacionActivity extends AppCompatActivity {
 
     ActivityInformacionBinding binding;
+    private FirestoreHelper firestoreHelper;
+    private String incidenciaId;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +35,11 @@ public class InformacionActivity extends AppCompatActivity {
                 R.layout.activity_informacion
         );
 
-        int incidenciaId = getIntent().getIntExtra("INCIDENCIA_ID", -1);
+        firestoreHelper = new FirestoreHelper();
+        incidenciaId = getIntent().getStringExtra("INCIDENCIA_ID");
 
-        DBHelper dbHelper = new DBHelper(this);
-        Incidencia incidencia = dbHelper.obtenerIncidenciaPorId(incidenciaId);
-
-
-
-        if (incidencia != null) { //Muestra los datos de la incidencia
-            binding.titulo.setText(incidencia.getTitulo());
-            binding.descripcion.setText(incidencia.getDescripcion());
-            binding.prioridad.setText(incidencia.getPrioridad());
-            if (incidencia.getFotoUrl() != null && !incidencia.getFotoUrl().equals("null")) {
-                Uri uriImagen = Uri.parse(incidencia.getFotoUrl());
-                binding.ivInfoFoto.setImageURI(uriImagen);
-            } else {
-                binding.ivInfoFoto.setVisibility(View.GONE);
-            }
-            binding.tvInfoUbicacion.setText(incidencia.getUbicacion());
+        if (incidenciaId != null) { //Muestra los datos de la incidencia
+            cargarIncidencia();
         }
 
         binding.btnBack.setOnClickListener(v -> {
@@ -57,5 +47,26 @@ public class InformacionActivity extends AppCompatActivity {
         });
     }
 
+    private void cargarIncidencia() {
+
+        firestoreHelper.obtenerIncidenciaPorId(incidenciaId, incidencia -> {
+
+            if (incidencia == null) return;
+
+            binding.titulo.setText(incidencia.getTitulo());
+            binding.descripcion.setText(incidencia.getDescripcion());
+            binding.prioridad.setText(incidencia.getPrioridad());
+
+            if (incidencia.getUbicacion() != null &&
+                    !incidencia.getUbicacion().equals("null")) {
+                binding.tvInfoUbicacion.setText(incidencia.getUbicacion());
+            }
+
+            if (incidencia.getFotoUrl() != null) {
+                binding.ivInfoFoto.setImageURI(Uri.parse(incidencia.getFotoUrl()));
+                binding.ivInfoFoto.setVisibility(View.VISIBLE);
+            }
+        });
+    }
 
 }

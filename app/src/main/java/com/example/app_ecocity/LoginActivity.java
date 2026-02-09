@@ -17,6 +17,8 @@ import androidx.databinding.DataBindingUtil;
 import com.example.app_ecocity.databinding.ActivityLoginBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -33,6 +35,11 @@ public class LoginActivity extends AppCompatActivity {
                 R.layout.activity_login
         );
         mAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder().setPersistenceEnabled(true).build(); //Activar la funcionalidad offline de Firestore en caso de que no exista conexión
+
+        db.setFirestoreSettings(settings);
 
         binding.registrame.setOnClickListener(v -> { //Activity de registro
             Intent intent = new Intent(LoginActivity.this, RegistroActivity.class);

@@ -10,8 +10,10 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+//DESUSADO EN HITO3 PERO MANTENIDO PARA DEMOSTRAR SU USO ANTERIORMENTE
+
 //Base de datos local en SQLite
-public class DBHelper extends SQLiteOpenHelper {
+/*public class DBHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "EcoCity";
     private static final int DB_VERSION = 1;
@@ -135,4 +137,4 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-}
+}*/

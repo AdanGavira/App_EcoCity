@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.app_ecocity.databinding.ActivityIncidenciasBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,8 @@ public class IncidenciasActivity extends AppCompatActivity {
 
     private static final int REQUEST_PERMISO_IMAGEN = 100;
     private ActivityIncidenciasBinding binding;
-    FirebaseAuth mAuth;
-    private DBHelper dbHelper;
+    private FirebaseAuth mAuth;
+    private FirestoreHelper firestoreHelper;
     private List<Incidencia> lista;
     private IncidenciaAdapter adapter;
 
@@ -39,7 +40,9 @@ public class IncidenciasActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        dbHelper = new DBHelper(this);
+        firestoreHelper = new FirestoreHelper();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = user.getUid();
 
         //Lista de incidencias
 
@@ -71,9 +74,12 @@ public class IncidenciasActivity extends AppCompatActivity {
     @Override
     protected void onResume() { //Asegurarse de que la información se muestra aunque salgamos del Activity
         super.onResume();
-        lista.clear();
-        lista.addAll(dbHelper.obtenerIncidencias());
-        adapter.notifyDataSetChanged();
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        firestoreHelper.obtenerIncidenciasUsuario(userId,incidencias -> {
+            lista.clear();
+            lista.addAll(incidencias);
+            adapter.notifyDataSetChanged();
+        });
     }
 
     @Override
