@@ -101,6 +101,8 @@ git clone https://github.com/tu-usuario/tu-repositorio.git
  - Activar Authentication y Firestore
 4. Ejecutar en emulador o dispositivo físico
 
+---
+
 ## 🧠 Flujo de Usuario
 
 1. Registro o inicio de sesión
@@ -109,10 +111,14 @@ git clone https://github.com/tu-usuario/tu-repositorio.git
 4. Selección de ubicación
 5. Comunicación mediante chat
 
+---
+
 ## 🔒 Seguridad
 - Autenticación mediante Firebase
 - Validación de formularios
 - Gestión segura de datos
+
+---
 
 ## Aclaraciones
 - Si la rama principal no funciona, utilizar rama `Key`
